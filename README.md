@@ -19,6 +19,7 @@ Here is a radio app using a Muse Proto board
 ## How to customize your app ?
 
 There  are two ways do to this:
+
 		1. With Arduino
 				- You have to edit two files :
 						. data/nameS  => the names of your prefered radios
