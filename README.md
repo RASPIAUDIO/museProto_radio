@@ -19,13 +19,13 @@ Here is a radio app using a Muse Proto board
 ## How to customize your app ?
 
         There  are two ways do to this:
-        	* - with Arduino
-            	1. - You have to edit two files
-                   	* - data/nameS  => the names of your prefered radios
-                   	* - data/linkS  => the links to these radios
-            	 2.- and then copy them to the flash memory (=> Tools =>  ESP32 Sketch Data Upload)
+        	    1. with Arduino
+            	1. - You have to edit two files :
+                   	   * data/nameS  => the names of your prefered radios
+                   	   * data/linkS  => the links to these radios
+            	      and then copy them to the flash memory (=> Tools =>  ESP32 Sketch Data Upload)
             
-    - Using the "parameter mode"  
+    2. - Using the "parameter mode"  
             - to switch to this mode, keep the MU button pressed while the app restarts
                   (The app automatically switches to this mode if it cannot connect to WiFi)
             - then with your smartphone connect to WiFi spot "Muse" (password : "musemuse")
