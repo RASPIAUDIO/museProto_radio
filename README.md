@@ -13,7 +13,7 @@ Here is a radio app using a Muse Proto board
         - very long press => stop (deep sleep) / restart
         
 #### And a little screen (64x128 SH1106) (sda gpio 18, scl gpio 23)
-   	_you can do without it but..._
+   	_ you can do without it but... _
          
         
 ## How to customize your app ?
