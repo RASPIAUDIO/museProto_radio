@@ -1,7 +1,7 @@
 # museProto_radio
 Here is a radio app using a Muse Proto board
 
-### It uses 3 buttons:
+#### It uses 3 buttons:
    - VM (gpio 32)
         - short press => volume -
         - long press => previous radio
@@ -12,7 +12,7 @@ Here is a radio app using a Muse Proto board
         - short press => mute/unmute
         - very long press => stop (deep sleep) / restart
         
-### And a little screen (64x128 SH1106) (sda gpio 18, scl gpio 23)
+#### And a little screen (64x128 SH1106) (sda gpio 18, scl gpio 23)
    	*you can do without it but...*
          
         
@@ -20,10 +20,10 @@ Here is a radio app using a Muse Proto board
 
         There  are two ways do to this:
         	* - with Arduino
-            	* - You have to edit two files
+            	1. - You have to edit two files
                    	* - data/nameS  => the names of your prefered radios
                    	* - data/linkS  => the links to these radios
-            	* - and then copy them to the flash memory (=> Tools =>  ESP32 Sketch Data Upload)
+            	 2.- and then copy them to the flash memory (=> Tools =>  ESP32 Sketch Data Upload)
             
     - Using the "parameter mode"  
             - to switch to this mode, keep the MU button pressed while the app restarts
