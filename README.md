@@ -34,4 +34,17 @@ There  are two ways do to this:
 						. to set the credentials of your wifi
 						. to add, modify, delete your radios
             
+## Before building it using Arduino...
+
+   You have to add  the Muse specific library (muse_lib) to Arduino libraries
+   
+   For example using these bash commands :
+   
+             > cd ..../museProto_radio
+             > cp -r muse_lib ..../Arduino/libraries
+   
+
+          
+ 
+ 
  ....                    
