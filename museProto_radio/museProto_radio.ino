@@ -1,22 +1,16 @@
 extern "C"
 {
 #include "hal_i2c.h"
-#include "hal_i2s.h"
-#include "driver/i2c.h"
-#include "driver/i2s.h"
+
 #include "tinyScreen128x64.h"
 }
 #include "Arduino.h"
 #include <Audio.h>
-#include <ETH.h>
-#include <nvs_flash.h>
-#include <nvs.h>
+
 #include "SPIFFS.h"
 #include "IotWebConf.h"
 #include "lwip/apps/sntp.h"
-#include <sys/time.h>
-#include "freertos/task.h"
-#include "freertos/semphr.h"
+
 
 
 #define I2S_DOUT      26
@@ -42,7 +36,7 @@ extern "C"
 
 int b0 = -1, b1 = -1, b2 = -1;
 
-
+////////////////////////////////////////////////////
 // -- Initial name of the Thing. Used e.g. as SSID of the own Access Point.
 const char thingName[] = "muse";
 
@@ -84,7 +78,7 @@ int selectedVol;
 int previousLevel = -1;
 int retries = 0;
 int vlevel,vmute;
-nvs_handle my_handle;
+
 esp_err_t err;
 char ssid[32]= "a";
 char pwd[32]= "b";
