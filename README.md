@@ -13,7 +13,7 @@ Here is a radio app using a Muse Proto board
         - very long press => stop (deep sleep) / restart
         
 #### And a little screen (64x128 SH1106) (sda gpio 18, scl gpio 23)
-   	you can do without it but...
+   	(optional)
          
         
 ## How to customize your app ?
@@ -34,15 +34,24 @@ There  are two ways do to this:
 						. to set the credentials of your wifi
 						. to add, modify, delete your radios
             
-## Before building it using Arduino...
+## Before building it using Arduino
 
-   You have to add  the Muse specific library (muse_lib) to Arduino libraries
+   You have to add  the Muse specific library (muse_lib) to Arduino libraries, copy the mus_lib file in you library directory, then restart the Arduino application?
    
    For example using these bash commands :
    
              > cd ..../museProto_radio
              > cp -r muse_lib ..../Arduino/libraries
    
+## Target option in Tools => 
+
+	Board: ESP32 Wrove module
+	Upload speed : 921600
+	Flash frequency: 80mHz
+	Flash mode : QIO
+	Partition Scheme : Huge App
+
+
 
           
  
