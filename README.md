@@ -1,3 +1,6 @@
+# The full tutorial is here: 
+https://forum.raspiaudio.com/t/muse-proto-radio-project/190
+
 # museProto_radio
 Here is a radio app using a Muse Proto board
 
