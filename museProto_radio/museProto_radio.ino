@@ -11,7 +11,10 @@ extern "C"
 #include "IotWebConf.h"
 #include "lwip/apps/sntp.h"
 
-
+///////////////////////////////////////////
+//#define SCREEN 0            // no screen
+#define SCREEN 1             // with screen
+///////////////////////////////////////////
 
 #define I2S_DOUT      26
 #define I2S_BCLK      5
@@ -584,13 +587,13 @@ printf("max ===> %d\n",MS);
    printf("Volume = %d\n",vol);
    audio.setVolume(vol);
 // init screen handler   
-
+#if SCREEN == 1
    tinySsd_init(SDA, SCL, 0, 0x3C, 1);  
    clearBuffer();
    sendBuffer();
    drawStrC(16,"Starting up...");
    sendBuffer();
-
+#endif
    
 /////////////////////////////////////////////////////////
 //init WiFi  
@@ -740,7 +743,9 @@ static int ec0=0, ec1=0, ec2=0;
       esp_deep_sleep_start();
     }
    //xSemaphoreGive(buttonsSem); 
+
    
+#if SCREEN == 1
 //////////////////////////////////////////////////////////   
 // handling display 
 /////////////////////////////////////////////////////////
@@ -779,7 +784,7 @@ clearBuffer();
  drawStr(56, 0, mesa);
  }
    sendBuffer();
-
+#endif
    delay(100);
 }
 
