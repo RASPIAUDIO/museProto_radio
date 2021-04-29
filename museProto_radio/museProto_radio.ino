@@ -10,6 +10,7 @@ extern "C"
 #include "SPIFFS.h"
 #include "IotWebConf.h"
 #include "lwip/apps/sntp.h"
+#include <NeoPixelBus.h>
 
 ///////////////////////////////////////////
 //#define SCREEN 0            // no screen
@@ -36,6 +37,25 @@ extern "C"
 
 #define MAXSTATION 17
 #define maxVol 15
+
+//////////////////////////////
+// NeoPixel led control
+/////////////////////////////
+#define PixelCount 1
+#define PixelPin 22
+RgbColor RED(255, 0, 0);
+RgbColor GREEN(0, 255, 0);
+RgbColor BLUE(0, 0, 255);
+RgbColor YELLOW(255, 128, 0);
+RgbColor WHITE(255, 255, 255);
+RgbColor BLACK(0, 0, 0);
+
+RgbColor REDL(64, 0, 0);
+RgbColor GREENL(0, 64, 0);
+RgbColor BLUEL(0, 0, 64);
+RgbColor WHITEL(64, 64, 64);
+RgbColor BLACKL(0, 0, 0);
+NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(PixelCount, PixelPin);
 
 int b0 = -1, b1 = -1, b2 = -1;
 
@@ -98,6 +118,31 @@ int iMes ;
 bool started = false;
 
 SemaphoreHandle_t buttonsSem = xSemaphoreCreateMutex();
+
+//////////////////////////////////////////////////////////////////////////
+// task for battery monitoring
+//////////////////////////////////////////////////////////////////////////
+#define NGREEN 2300
+#define NYELLOW 1800
+static void battery(void* pdata)
+{
+  int val;
+  while(1)
+  {
+   val = adc1_get_raw(ADC1_GPIO33_CHANNEL);
+   printf("Battery : %d\n");
+   if(val < NYELLOW) strip.SetPixelColor(0, RED);
+   else if(val > NGREEN) strip.SetPixelColor(0, GREEN);
+   else strip.SetPixelColor(0, YELLOW);
+   strip.Show();   
+   delay(10000);
+  }
+}
+
+
+
+
+
 
 void confErr(void)
 {
@@ -527,9 +572,20 @@ if(!SPIFFS.begin())Serial.println("Erreur SPIFFS");
     
 printf(" SPIFFS used bytes  ====> %d of %d\n",(int)SPIFFS.usedBytes(), (int)SPIFFS.totalBytes());      
 
+////////////////////////////////////////////////////////////////
+// init led handle
+///////////////////////////////////////////////////////////////
+  strip.Begin();  
 
+////////////////////////////////////////////////////////////////
+// init ADC interface for battery survey
+/////////////////////////////////////////////////////////////////
+  adc1_config_width(ADC_WIDTH_BIT_12);
+  adc1_config_channel_atten(ADC1_GPIO33_CHANNEL, ADC_ATTEN_DB_11);
+////////////////////////////////////////////////////////////////
+
+  
 // variables de travail
-
 previousStation = -1;
 station = 0;
 MS = maxStation()-1;
@@ -620,8 +676,9 @@ printf("max ===> %d\n",MS);
   server.on("/config", []{ iotWebConf.handleConfig(); });
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
 
- xTaskCreate(playRadio, "radio", 5000 , NULL, 1, NULL);
-
+  xTaskCreate(playRadio, "radio", 5000 , NULL, 1, NULL);
+//task managing the battery
+  xTaskCreate(battery, "battery", 5000, NULL, 1, NULL);  
 }
 
 void loop() {
@@ -738,8 +795,9 @@ static int ec0=0, ec1=0, ec2=0;
       b2 = -1;
       clearBuffer();
       sendBuffer();
-      esp_sleep_enable_ext0_wakeup(STOP,LOW);
-     
+      strip.SetPixelColor(0, BLACK);
+      strip.Show();
+      esp_sleep_enable_ext0_wakeup(STOP,LOW);     
       esp_deep_sleep_start();
     }
    //xSemaphoreGive(buttonsSem); 
