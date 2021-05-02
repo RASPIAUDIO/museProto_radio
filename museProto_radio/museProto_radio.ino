@@ -682,8 +682,9 @@ printf("max ===> %d\n",MS);
 }
 
 void loop() {
+#define Press 3  
 #define longPress  4  
-#define veryLongPress 20
+#define veryLongPress 15
 static int v0, v1, v2;
 static int ec0=0, ec1=0, ec2=0;
    iotWebConf.doLoop();
@@ -730,8 +731,8 @@ static int ec0=0, ec1=0, ec2=0;
 // Volume + (VP short) Volume - (VM short)
    oldVol = vol;
  // xSemaphoreTake(buttonsSem, portMAX_DELAY);
-  if((b0 > 0) && (b0 < longPress)) {vol++ ;b0 = -1;printf("P\n");}
-  if((b1 > 0) && (b1 < longPress)) {vol-- ;b1 = -1;printf("M\n");}
+  if((b0 > 0) && (b0 < Press)) {vol++ ;b0 = -1;printf("P\n");}
+  if((b1 > 0) && (b1 < Press)) {vol-- ;b1 = -1;printf("M\n");}
 //  xSemaphoreGive(buttonsSem);
   if (vol > maxVol) vol = maxVol;
   if (vol < 0) vol = 0;
