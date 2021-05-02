@@ -743,22 +743,7 @@ void loop() {
      }
      timeON = true;
    }
-   /*
-/////////////////////////////////////////////////////////////////  
-// prise en charge des boutons
-/////////////////////////////////////////////////////////////////
-    if((gpio_get_level(VP) == 1) && (ec0 == 1)){b0 = v0; ec0 = 0;}
-    if((gpio_get_level(VP) == 1) && (b0 == -1)) {v0 = 0; ec0 = 0;}
-    if(gpio_get_level(VP) == 0) {v0++; ec0 = 1;}
-   
-    if((gpio_get_level(VM) == 1) && (ec1 == 1)){b1 = v1; ec1 = 0;}
-    if((gpio_get_level(VM) == 1) && (b1 == -1)) {v1 = 0; ec1 = 0;}
-    if(gpio_get_level(VM) == 0) {v1++; ec1 = 1;}
-   
-    if((gpio_get_level(MU) == 1) && (ec2 == 1)){b2 = v2; ec2 = 0;}
-    if((gpio_get_level(MU) == 1) && (b2 == -1)) {v2 = 0; ec2 = 0;}
-    if(gpio_get_level(MU) == 0) {v2++; ec2 = 1;}
-*/
+ 
 // Volume + (VP short) Volume - (VM short)
    oldVol = vol;
  // xSemaphoreTake(buttonsSem, portMAX_DELAY);
