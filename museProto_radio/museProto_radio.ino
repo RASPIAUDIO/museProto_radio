@@ -364,8 +364,8 @@ void convToAscii(char *s, char *t)
 
 ///////////////////////////////////////////////////////////////////////
 // task managing the speaker buttons
-// normal or long press
-/////////://///////////////////////////////////////////////////////////
+// 
+//////////////////////////////////////////////////////////////////////
 static void keyb(void* pdata)
 {
 static int v0, v1, v2;
@@ -382,8 +382,7 @@ static int ec0=0, ec1=0, ec2=0;
    
     if((gpio_get_level(MU) == 1) && (ec2 == 1)){b2 = v2; ec2 = 0;}
     if((gpio_get_level(MU) == 1) && (b2 == -1)) {v2 = 0; ec2 = 0;}
-    if(gpio_get_level(MU) == 0) {v2++; ec2
-    = 1;}
+    if(gpio_get_level(MU) == 0) {v2++; ec2 = 1;}
     
   //  printf("%d %d %d %d %d %d\n",b0,b1,b2,v0,v1,v2);
     delay(100);
@@ -713,7 +712,7 @@ printf("max ===> %d\n",MS);
 
 void loop() {
 #define Press 3  
-#define longPress  4  
+#define longPress  6 
 #define veryLongPress 30
 //static int v0, v1, v2;
 //static int ec0=0, ec1=0, ec2=0;
@@ -773,6 +772,8 @@ void loop() {
  // xSemaphoreTake(buttonsSem, portMAX_DELAY);
   if((b0 > 0) && (b0 > longPress)) {station++; b0 = -1;}
   if((b1 > 0) && (b1 > longPress)) {station--; b1 = -1;}
+  if((b0 >= Press) && (b0 <= longPress))b0 = -1;
+  if((b1 >= Press) && (b1 <= longPress))b1 = -1;
   //xSemaphoreGive(buttonsSem);
   
    if(station > MS) station = 0;
