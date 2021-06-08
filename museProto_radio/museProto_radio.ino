@@ -1,7 +1,7 @@
 extern "C"
 {
 #include "hal_i2c.h"
-
+//
 #include "tinyScreen128x64.h"
 }
 #include "Arduino.h"
@@ -16,6 +16,11 @@ extern "C"
 //#define SCREEN 0            // no screen
 #define SCREEN 1             // with screen
 ///////////////////////////////////////////
+
+//////////////////////////////////////////
+//#define beepOK 1
+#define beepOK 0
+//////////////////////////////////////////
 
 #define I2S_DOUT      26
 #define I2S_BCLK      5
@@ -399,7 +404,7 @@ static void playRadio(void* data)
   while(1)
   {
 
-//   printf("st %d prev %d\n",station,previousStation);
+   //printf("st %d prev %d\n",station,previousStation);
     if((station != previousStation)||(connected == false))
    {     
       printf("station no %d\n",station);
@@ -412,7 +417,7 @@ static void playRadio(void* data)
       previousStation = station;
     }
   // delay(100);
-  //if(connected == false) delay(500);
+  if(connected == false) delay(500);
 
    if(beepON == false)audio.loop();
   }
@@ -484,11 +489,13 @@ void playWav(char* n, uint8_t att)
 /////////////////////////////////////////////////////////////////////
 void beep(void)
 {
+#if   beepOK == 1
 #define attBeep 4
   beepON = true;
   playWav("/Beep.wav", attBeep);
   beepON = false;
   i2s_set_clk(I2SN, sampleRate, (i2s_bits_per_sample_t)16, (i2s_channel_t)2);
+#endif  
 }
 
 
@@ -675,7 +682,7 @@ printf("max ===> %d\n",MS);
    tinySsd_init(SDA, SCL, 0, 0x3C, 1);  
    clearBuffer();
    sendBuffer();
-   drawStrC(16,"Starting up...");
+   drawBigStrC(24,"Ros&Co");
    sendBuffer();
 #endif
    
@@ -711,8 +718,8 @@ printf("max ===> %d\n",MS);
 }
 
 void loop() {
-#define Press 3  
-#define longPress  6 
+#define Press 9   
+#define longPress  12
 #define veryLongPress 30
 //static int v0, v1, v2;
 //static int ec0=0, ec1=0, ec2=0;
