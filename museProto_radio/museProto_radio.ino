@@ -1,4 +1,4 @@
-extern "C"
+ extern "C"
 {
 #include "hal_i2c.h"
 //
@@ -29,7 +29,7 @@ extern "C"
 #define I2SN (i2s_port_t)0
 #define I2CN (i2c_port_t)0
 #define SDA 18
-#define SCL 23
+#define SCL 15
 
 //Buttons
 #define MU GPIO_NUM_12      // short => mute/unmute  long => stop (deep sleep)
@@ -38,7 +38,8 @@ extern "C"
 #define CFG GPIO_NUM_12
 #define STOP GPIO_NUM_12
 //Amp power enable
-#define PW GPIO_NUM_21        
+#define PW GPIO_NUM_21     
+#define GAIN GPIO_NUM_23         
 
 #define MAXSTATION 17
 #define maxVol 15
@@ -65,7 +66,6 @@ NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(PixelCount, PixelPin);
 int b0 = -1, b1 = -1, b2 = -1;
 
 ////////////////////////////////////////////////////
-// -- Initial name of the Thing. Used e.g. as SSID of the own Access Point.
 const char thingName[] = "muse";
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
@@ -135,7 +135,7 @@ static void battery(void* pdata)
   while(1)
   {
    val = adc1_get_raw(ADC1_GPIO33_CHANNEL);
-   printf("Battery : %d\n");
+   printf("Battery : %d\n", val);
    if(val < NYELLOW) strip.SetPixelColor(0, RED);
    else if(val > NGREEN) strip.SetPixelColor(0, GREEN);
    else strip.SetPixelColor(0, YELLOW);
@@ -143,10 +143,6 @@ static void battery(void* pdata)
    delay(10000);
   }
 }
-
-
-
-
 
 
 void confErr(void)
@@ -665,16 +661,24 @@ printf("max ===> %d\n",MS);
         gpio_set_pull_mode(CFG, GPIO_PULLUP_ONLY);
 //        gpio_set_pull_mode(STOP, GPIO_PULLUP_ONLY);
 
-
+   
 // power enable
         gpio_reset_pin(PW);
-        gpio_set_direction(PW, GPIO_MODE_OUTPUT);        
+        gpio_set_direction(PW, GPIO_MODE_OUTPUT);      
+
+        gpio_reset_pin(GAIN);
+        gpio_set_direction(GAIN, GPIO_MODE_OUTPUT);  
+ //       gpio_set_pull_mode(GAIN, GPIO_PULLDOWN_ONLY);   // 15dB   
+
+// power enable
+        gpio_set_level(PW, 1); 
+        gpio_set_level(GAIN, 0);      // 12dB
+        
 
 // init I2S   
    audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
    i2s_set_clk(I2SN, 44100, (i2s_bits_per_sample_t)16, (i2s_channel_t)2);
-// power enable
-   gpio_set_level(PW, 1);   
+  
    printf("Volume = %d\n",vol);
    audio.setVolume(vol);
 // init screen handler   
@@ -715,6 +719,9 @@ printf("max ===> %d\n",MS);
 //task managing the battery
   xTaskCreate(battery, "battery", 5000, NULL, 1, NULL);  
   xTaskCreate(keyb, "keyb", 5000, NULL, 5, NULL);
+
+
+  
 }
 
 void loop() {
@@ -734,7 +741,7 @@ void loop() {
 //
 ////////////////////////////////////////////////////////////////////
 // time zone init
-    setenv("TZ", "CEST-1", 1);
+    setenv("TZ", "CEST-2", 1);
     tzset();
 //sntp init
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
