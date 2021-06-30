@@ -15,7 +15,7 @@ Here is a radio app using a Muse Proto board
         - short press => mute/unmute
         - very long press => stop (deep sleep) / restart
         
-#### And a little screen (64x128 SH1106) (sda gpio 18, scl gpio 23)
+#### And a little screen (64x128 SH1106) (sda gpio 18, scl gpio 15)
    	(optional)
          
         
